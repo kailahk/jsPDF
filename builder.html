@@ -1,5 +1,5 @@
 <!doctype>
-<html> 
+<html>
 <head>
     <title>jsPDF</title>
 
@@ -8,8 +8,8 @@
     <link rel="stylesheet" type="text/css" href="examples/css/main.css">
 	<style>
 		.module,
-		.module.header{    
-			font-size: 14px;
+		.module.header{
+			font-size: 16px;
 			clear: both;
 			border-bottom: 1px solid #ddd;
 		}
@@ -50,7 +50,7 @@
 	<script type="text/javascript" src="modules.conf.js"></script>
 
     <script>
-	
+
         $(document).ready(function() {
 			var form = $('#selection');
 			var html = '';
@@ -58,50 +58,50 @@
 			var name = '';
 			var description = '';
 			var dependencies = '';
-			
+
 			for (var i = 0; i < keys.length; i++) {
 				name = keys[i];
 				description = configuration[keys[i]].description || '';
 				dependencies = configuration[keys[i]].deps.join(', ') || '';
 				html = '<div class="module">';
-				
+
 				html += '<div class="checkbox">';
 				html += '<input type="checkbox" name="' + name + '" value="' + name +'" />';
 				html += '</div>';
-				
+
 				html += '<div class="name">';
 				html += configuration[name].name;
 				html += '</div>';
-				
+
 				html += '<div class="description">';
 				html += description;
 				html += '<p>Dependencies:' + dependencies + '</p>';
 				html += '</div>';
-				
+
 				html += '</div>';
 				form.prepend(html);
 			}
-			
+
 			html = '<div class="module header">';
-			
+
 			html += '<div class="checkbox">';
 			html += '<input type="checkbox" name="all" value="all" />';
 			html += '</div>';
-			
+
 			html += '<div class="name">';
 			html += 'Name';
 			html += '</div>';
-			
+
 			html += '<div class="description">';
 			html += 'Description';
 			html += '</div>';
-			
+
 			html += '</div>';
 			form.prepend(html);
-				
-				
+
+
 			$('#selection :checkbox[name="all"]').change(function() {
-			
+
 				if(this.checked === true) {
 					$('input[name!="all"]').prop('checked', true).change();
 				} else {
@@ -138,7 +138,7 @@
 			  event.preventDefault();
 			});
         });
-		
+
 		function loadBinaryResource (url, unicodeCleanUp) {
 		  var req = new XMLHttpRequest()
 		  req.open('GET', url, false)
@@ -155,7 +155,7 @@
 
 		  var responseText = req.responseText;
 		  var StringFromCharCode = String.fromCharCode;
-		  if (unicodeCleanUp === true) {    
+		  if (unicodeCleanUp === true) {
 			var i = 0;
 			for (i = 0; i < responseText.length; i += 1) {
 			  byteArray.push(StringFromCharCode(responseText.charCodeAt(i) & 0xff))
@@ -176,7 +176,7 @@
 					return objs.indexOf(item) >= 0 ? false : objs.push(item);
 			});
 		}
-		
+
 		function generateFileList(formValues) {
 			var fileList = [];
 			var module;
@@ -194,7 +194,7 @@
 			fileList = uniq(fileList);
 			return fileList;
 		}
-		
+
 		function download(filename, text) {
 		  var element = document.createElement('a');
 		  element.setAttribute('href', 'data:text/javascript;charset=utf-8,' + encodeURIComponent(text));
@@ -207,22 +207,22 @@
 
 		  document.body.removeChild(element);
 		}
-		
+
 		function build(formValues) {
 			var fileList = generateFileList(formValues);
-			
+
 			var date = new Date().toISOString();
 			var packageJson = JSON.parse(loadBinaryResource('package.json'));
 			var version = packageJson.version;
 			var loadedFiles = [];
 			var result = '';
-			
+
 			for (var i = 0; i < fileList.length; i++) {
 				loadedFiles.push(loadBinaryResource('src/' + fileList[i]));
 			}
-			
+
 			result = loadedFiles.join("\n\r");
-			
+
 			result = result.replace(/\$\{versionID\}/g, version)
 			result = result.replace(/\$\{builtOn\}/g, date)
 
